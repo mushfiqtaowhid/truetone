@@ -1,0 +1,6 @@
+{
+  "name": "FakeTrueTone - iOS 15-16 Rootless Theos Tweak & Simulator",
+  "description": "Production-ready rootless Theos tweak project for Dopamine (iOS 15.0–16.7.x) that mocks True Tone toggles in Settings & Control Center, accompanied by an interactive iOS simulator and codebase browser.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
