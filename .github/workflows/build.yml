@@ -17,7 +17,7 @@ jobs:
 
       - name: Install ldid & Theos
         run: |
-          brew install ldid-procursus
+          brew install ldid-procursus dpkg
           git clone --recursive https://github.com/theos/theos.git ~/theos
           rm -rf ~/theos/sdks
           git clone --depth=1 https://github.com/theos/sdks.git ~/theos/sdks
@@ -29,11 +29,11 @@ jobs:
           make clean
           make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
 
-      - name: Deploy .deb to Repository Root
+      - name: Commit Compiled .deb to Repository
         run: |
           cp packages/*.deb ./com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
-          git commit -m "chore: auto-compile arm64 FakeTrueTone rootless dylib" || echo "No changes to commit"
+          git commit -m "build: compile real arm64 FakeTrueTone rootless debian package" || echo "No changes to commit"
           git push origin main
