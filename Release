@@ -3,6 +3,6 @@ Label: TrueTone
 Suite: stable
 Version: 1.0
 Codename: ios
-Architectures: iphoneos-arm64 iphoneos-arm64e all
-Components: main
-Description: Fake True Tone Rootless Tweak for iOS 15.0 - 16.7.x (Dopamine & ElleKit)
+Architectures: iphoneos-arm64 iphoneos-arm64e
+Components:
+Description: Fake True Tone Rootless Tweak for iOS 15.0 - 16.7.x
