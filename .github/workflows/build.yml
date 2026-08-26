@@ -15,23 +15,53 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install ldid & Theos
+      - name: Install Dependencies & Theos
         run: |
           brew install ldid-procursus dpkg
           git clone --recursive https://github.com/theos/theos.git ~/theos
           rm -rf ~/theos/sdks
           git clone --depth=1 https://github.com/theos/sdks.git ~/theos/sdks
 
-      - name: Compile Rootless Package
+      - name: Build and Package .deb
         env:
           THEOS: /Users/runner/theos
         run: |
           make clean
-          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+          make THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+          
+          # Clean staging directory structure
+          rm -rf package_root
+          mkdir -p package_root/DEBIAN
+          mkdir -p package_root/var/jb/Library/MobileSubstrate/DynamicLibraries
+          
+          # Copy control file
+          cat << 'EOF' > package_root/DEBIAN/control
+          Package: com.developer.faketruetone
+          Name: FakeTrueTone
+          Version: 1.0.0
+          Architecture: iphoneos-arm64
+          Description: Force True Tone toggle in Settings and Control Center for iOS 15.0 - 16.7.x rootless
+          Maintainer: mushfiqtaowhid
+          Author: mushfiqtaowhid
+          Section: Tweaks
+          Depends: mobilesubstrate (>= 0.9.7000) | ellekit
+          EOF
+          
+          # Copy dylib and plist into rootless /var/jb directory
+          cp .theos/obj/FakeTrueTone.dylib package_root/var/jb/Library/MobileSubstrate/DynamicLibraries/
+          cp FakeTrueTone.plist package_root/var/jb/Library/MobileSubstrate/DynamicLibraries/
+          
+          # Ensure correct permissions
+          chmod 755 package_root/DEBIAN
+          chmod 644 package_root/DEBIAN/control
+          chmod 755 package_root/var/jb/Library/MobileSubstrate/DynamicLibraries/FakeTrueTone.dylib
+          chmod 644 package_root/var/jb/Library/MobileSubstrate/DynamicLibraries/FakeTrueTone.plist
+          
+          # Build authentic rootless .deb with dpkg-deb
+          dpkg-deb -Zgzip --root-owner-group -b package_root ./com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
 
-      - name: Commit Compiled .deb to Repository
+      - name: Deploy .deb to Repository Root
         run: |
-          cp packages/*.deb ./com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
