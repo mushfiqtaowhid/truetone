@@ -15,11 +15,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Theos & SDK
+      - name: Install Theos & SDKs
         run: |
           git clone --recursive https://github.com/theos/theos.git ~/theos
-          curl -LO https://github.com/theos/sdks/releases/download/latest/iPhoneOS16.5.sdk.tar.xz
-          tar -xf iPhoneOS16.5.sdk.tar.xz -C ~/theos/sdks/
+          git clone --depth=1 https://github.com/theos/sdks.git ~/theos/sdks
 
       - name: Compile Rootless Package
         env:
