@@ -1,0 +1,36 @@
+name: Build FakeTrueTone Rootless .deb
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Theos
+        run: |
+          git clone --recursive https://github.com/theos/theos.git ~/theos
+          git clone --recursive https://github.com/theos/sdks.git ~/theos/sdks
+          curl -LO https://github.com/theos/sdks/releases/download/latest/iPhoneOS16.5.sdk.tar.xz
+          tar -xf iPhoneOS16.5.sdk.tar.xz -C ~/theos/sdks/
+
+      - name: Compile Rootless Tweak
+        env:
+          THEOS: ~/theos
+        run: |
+          make clean
+          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+
+      - name: Copy Compiled .deb to Root
+        run: |
+          cp packages/*.deb ./com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
+          git commit -m "Auto-compiled real ARM64 binary FakeTrueTone" || echo "No changes"
+          git push origin main
