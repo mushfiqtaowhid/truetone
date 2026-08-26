@@ -1,0 +1,12 @@
+Package: com.developer.faketruetone
+Name: FakeTrueTone
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: Simulated True Tone toggle for iOS 15.0 - 16.7.x
+Maintainer: mushfiqtaowhid
+Author: mushfiqtaowhid
+Section: Tweaks
+Filename: debs/com.developer.faketruetone_1.0.0_iphoneos-arm64.deb
+Size: 8420
+MD5sum: d41d8cd98f00b204e9800998ecf8427e
+SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
