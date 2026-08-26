@@ -1,6 +1,6 @@
 Package: com.developer.faketruetone
 Name: FakeTrueTone
-Version: 1.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm64
 Description: Force True Tone toggle in Settings and Control Center for iOS 15.0 - 16.7.x
 Maintainer: mushfiqtaowhid
