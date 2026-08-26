@@ -7,7 +7,7 @@
 - (BOOL)colorAdaptationAvailable { return YES; }
 - (BOOL)isColorAdaptationAvailable { return YES; }
 - (BOOL)getEnabled { return YES; }
-- (BOOL)setEnabled:(BOOL)arg1 { return %orig(arg1); }
+- (BOOL)setEnabled:(BOOL)arg1 { return %orig; }
 %end
 
 %hook CBClient
